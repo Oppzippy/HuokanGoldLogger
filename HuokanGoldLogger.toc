@@ -1,0 +1,10 @@
+## Interface: 80300
+## Title: Huokan Gold Logger
+## Notes: Anti RMT gold logger for Huokan Boosting Community.
+## Author: Oppzippy
+## Version: @project-version@
+## OptionalDeps: Ace3, LibCopyPaste-1.0, LibDeflate
+## SavedVariables: HuokanAdvertiserToolsDB
+
+libs.xml
+Core.lua
