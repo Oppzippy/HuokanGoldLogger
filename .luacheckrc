@@ -48,4 +48,13 @@ globals = {
 	"TradeFrameTradeButton",
 	"GetTradePlayerItemInfo",
 	"GetTradeTargetItemInfo",
+	"CanAffordMerchantItem",
+	"GetMerchantItemLink",
+	"GetBuybackItemInfo",
+	"GetBuybackItemLink",
+	"GetContainerItemInfo",
+	"MerchantFrame",
+	"GetContainerItemLink",
+	"CursorHasItem",
+	"GetCursorInfo",
 }
