@@ -57,4 +57,5 @@ globals = {
 	"GetContainerItemLink",
 	"CursorHasItem",
 	"GetCursorInfo",
+	"C_AuctionHouse",
 }

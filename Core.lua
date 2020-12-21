@@ -30,6 +30,14 @@ hooksecurefunc("UseContainerItem", function(bagId, slot)
 	end
 end)
 
+hooksecurefunc("RepairAllItems", function(isGuildBankRepair)
+	if not isGuildBankRepair then
+		addon.event = {
+			type = "REPAIR",
+		}
+	end
+end)
+
 hooksecurefunc("SellCursorItem", function()
 	if MerchantFrame:IsVisible() and CursorHasItem() then
 		local _, _, itemLink = GetCursorInfo()
@@ -40,10 +48,42 @@ hooksecurefunc("SellCursorItem", function()
 	end
 end)
 
+hooksecurefunc(
+	C_AuctionHouse,
+	"ConfirmCommoditiesPurchase",
+	function(itemId, quantity)
+		addon.event = {
+			type = "AUCTION_HOUSE_COMMODITY_BUY",
+			itemid = itemId,
+			quantity = quantity,
+		}
+	end
+)
+
+hooksecurefunc(
+	C_AuctionHouse,
+	"PlaceBid",
+	function(auctionId, bidAmount)
+		-- TODO check if it's a bid or buyout since they both use this same function
+		-- Add item link
+		addon.event = {
+			type = "AUCTION_HOUSE_BID",
+		}
+	end
+)
+
 function addon:OnInitialize()
 	self.prevMoney = GetMoney()
 
 	self:RegisterEvent("PLAYER_MONEY")
+	self:RegisterEvent("PLAYER_TRADE_MONEY")
+end
+
+function addon:PLAYER_TRADE_MONEY()
+	-- XXX sometimes this event fires after PLAYER_MONEY
+	self.event = {
+		type = "TRADE",
+	}
 end
 
 function addon:PLAYER_MONEY()
@@ -54,12 +94,6 @@ function addon:PLAYER_MONEY()
 end
 
 function addon:LogTrade(trade)
-end
-
-function addon:LogVendor(vendor)
-end
-
-function addon:LogRepair(repair)
 end
 
 function addon:LogBankTransaction(transaction)
@@ -82,5 +116,6 @@ function addon:Log(prevMoney, newMoney, event)
 	end
 	event.prevMoney = prevMoney
 	event.newMoney = newMoney
+	event.timestamp = date("!%Y-%m-%dT%TZ")
 	ViragDevTool_AddData(event)
 end
