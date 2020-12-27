@@ -77,6 +77,10 @@ function addon:OnInitialize()
 
 	self:RegisterEvent("PLAYER_MONEY")
 	self:RegisterEvent("PLAYER_TRADE_MONEY")
+	self:RegisterEvent("BLACK_MARKET_BID_RESULT")
+	self:RegisterEvent("AUCTION_HOUSE_AUCTION_CREATED")
+	self:RegisterEvent("LOOT_SLOT_CLEARED")
+	self:RegisterEvent("LOOT_CLOSED")
 end
 
 function addon:PLAYER_TRADE_MONEY()
@@ -84,6 +88,30 @@ function addon:PLAYER_TRADE_MONEY()
 	self.event = {
 		type = "TRADE",
 	}
+end
+
+function addon:BLACK_MARKET_BID_RESULT()
+	self.event = {
+		type = "BMAH_BID",
+	}
+end
+
+function addon:AUCTION_HOUSE_AUCTION_CREATED()
+	self.event = {
+		type = "AUCTION_HOUSE_DEPOSIT",
+	}
+end
+
+function addon:LOOT_SLOT_CLEARED(slot)
+	self.event = {
+		type = "LOOT",
+	}
+end
+
+function addon:LOOT_CLOSED()
+	C_Timer.After(0.1, function()
+		self.event = nil
+	end)
 end
 
 function addon:PLAYER_MONEY()
@@ -100,12 +128,6 @@ function addon:LogBankTransaction(transaction)
 end
 
 function addon:LogMail(mail)
-end
-
-function addon:LogAuctionDeposit(auction)
-end
-
-function addon:LogLoot(loot)
 end
 
 function addon:Log(prevMoney, newMoney, event)
