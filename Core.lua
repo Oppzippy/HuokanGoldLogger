@@ -72,6 +72,18 @@ hooksecurefunc(
 	end
 )
 
+hooksecurefunc("AutoLootMailItem", function()
+	addon.event = {
+		type = "MAIL",
+	}
+end)
+
+hooksecurefunc("TakeInboxMoney", function()
+	addon.event = {
+		type = "MAIL",
+	}
+end)
+
 function addon:OnInitialize()
 	self.prevMoney = GetMoney()
 
