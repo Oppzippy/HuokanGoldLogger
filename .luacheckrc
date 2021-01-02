@@ -58,4 +58,7 @@ globals = {
 	"CursorHasItem",
 	"GetCursorInfo",
 	"C_AuctionHouse",
+	"C_Item",
+	"AuctionHouseFrame",
+	"HuokanGoldLog",
 }
