@@ -1,0 +1,19 @@
+name: Release
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Install luacheck
+        run: sudo apt-get install lua-check
+      - name: Run luacheck
+        run: luacheck .
+      - name: Package and release
+        uses: BigWigsMods/packager@master
+        env:
+          GITHUB_OAUTH: ${{ secrets.GITHUB_TOKEN }}
