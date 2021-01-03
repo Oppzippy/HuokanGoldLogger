@@ -75,21 +75,29 @@ hooksecurefunc(
 	end
 )
 
-hooksecurefunc("AutoLootMailItem", function()
-	Logger:SetEvent({
-		type = "MAIL_INCOMING",
-	})
-end)
+do
+	local function onLoot(index)
+		local invoiceType, itemName, buyerName = GetInboxInvoiceInfo(index)
+		if invoiceType == "seller" then
+			Logger:SetEvent({
+				type = "AUCTION_HOUSE_SELL",
+				itemName = itemName,
+				buyerName = buyerName
+			})
+		else
+			Logger:SetEvent({
+				type = "MAIL_IN",
+			})
+		end
+	end
 
-hooksecurefunc("TakeInboxMoney", function()
-	Logger:SetEvent({
-		type = "MAIL_INCOMING",
-	})
-end)
+	hooksecurefunc("AutoLootMailItem", onLoot)
+	hooksecurefunc("TakeInboxMoney", onLoot)
+end
 
 hooksecurefunc("SendMail", function()
 	Logger:SetEvent({
-		type = "MAIL_OUTGOING",
+		type = "MAIL_OUT",
 	})
 end)
 

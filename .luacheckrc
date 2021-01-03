@@ -61,4 +61,5 @@ globals = {
 	"C_Item",
 	"AuctionHouseFrame",
 	"HuokanGoldLog",
+	"GetInboxInvoiceInfo",
 }
