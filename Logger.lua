@@ -95,6 +95,10 @@ end)
 
 function Logger:OnInitialize()
 	self.prevMoney = GetMoney()
+	self.character = {
+		name = UnitName("player"),
+		realm = GetRealmName(),
+	}
 
 	self:RegisterEvent("PLAYER_MONEY")
 	self:RegisterEvent("PLAYER_TRADE_MONEY")
@@ -167,6 +171,7 @@ function Logger:Log(prevMoney, newMoney, event)
 	event.prevMoney = prevMoney
 	event.newMoney = newMoney
 	event.timestamp = date("!%Y-%m-%dT%TZ")
+	event.character = self.character
 
 	local Storage = Core:GetModule("Storage")
 	Storage:Store(event)
