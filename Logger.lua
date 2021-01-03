@@ -77,8 +77,9 @@ hooksecurefunc(
 
 do
 	local function onLoot(index)
+		local _, _, _, _, isInvoice = GetInboxText(index)
 		local invoiceType, itemName, buyerName = GetInboxInvoiceInfo(index)
-		if invoiceType == "seller" then
+		if isInvoice and invoiceType == "seller" then
 			Logger:SetEvent({
 				type = "AUCTION_HOUSE_SELL",
 				itemName = itemName,
