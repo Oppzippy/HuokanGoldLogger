@@ -103,13 +103,13 @@ hooksecurefunc("SendMail", function()
 end)
 
 function Logger:OnInitialize()
-	self.prevMoney = GetMoney()
 	self.character = {
 		name = UnitName("player"),
 		realm = GetRealmName(),
 	}
 
-	self:RegisterEvent("PLAYER_MONEY")
+	self:RegisterEvent("PLAYER_ENTERING_WORLD")
+
 	self:RegisterEvent("PLAYER_TRADE_MONEY")
 	self:RegisterEvent("BLACK_MARKET_BID_RESULT")
 	self:RegisterEvent("AUCTION_HOUSE_AUCTION_CREATED")
@@ -117,6 +117,13 @@ function Logger:OnInitialize()
 	self:RegisterEvent("LOOT_CLOSED")
 	self:RegisterEvent("GUILDBANK_UPDATE_WITHDRAWMONEY")
 	self:RegisterEvent("QUEST_TURNED_IN")
+
+	self:RegisterEvent("PLAYER_MONEY")
+end
+
+function Logger:PLAYER_ENTERING_WORLD()
+	self:UnregisterEvent("PLAYER_ENTERING_WORLD")
+	self.prevMoney = GetMoney()
 end
 
 function Logger:PLAYER_TRADE_MONEY()
