@@ -49,4 +49,4 @@ if len(sys.argv) == 1:
     print("Usage: ./decompress.py HuokanGoldLogger.lua")
 else:
     log = read_log_file(sys.argv[1])
-    print(parse_log(log))
+    print(json.dumps(parse_log(log)))
