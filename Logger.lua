@@ -116,6 +116,7 @@ function Logger:OnInitialize()
 	self:RegisterEvent("LOOT_SLOT_CLEARED")
 	self:RegisterEvent("LOOT_CLOSED")
 	self:RegisterEvent("GUILDBANK_UPDATE_WITHDRAWMONEY")
+	self:RegisterEvent("QUEST_TURNED_IN")
 end
 
 function Logger:PLAYER_TRADE_MONEY()
@@ -137,7 +138,7 @@ function Logger:AUCTION_HOUSE_AUCTION_CREATED()
 	})
 end
 
-function Logger:LOOT_SLOT_CLEARED(slot)
+function Logger:LOOT_SLOT_CLEARED()
 	self:SetEvent({
 		type = "LOOT",
 	})
@@ -153,6 +154,15 @@ function Logger:GUILDBANK_UPDATE_WITHDRAWMONEY()
 	self:SetEvent({
 		type = "GUILD_BANK"
 	})
+end
+
+function Logger:QUEST_TURNED_IN(_, questId, _, copperReward)
+	if copperReward and copperReward > 0 then
+		self:SetEvent({
+			type = "QUEST_REWARD",
+			questId = questId,
+		})
+	end
 end
 
 function Logger:PLAYER_MONEY()
