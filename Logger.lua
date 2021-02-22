@@ -39,6 +39,18 @@ hooksecurefunc("RepairAllItems", function(isGuildBankRepair)
 	end
 end)
 
+hooksecurefunc("WithdrawGuildBankMoney", function()
+	Logger:SetEvent({
+		type = "GUILD_BANK"
+	})
+end)
+
+hooksecurefunc("DepositGuildBankMoney", function()
+	Logger:SetEvent({
+		type = "GUILD_BANK"
+	})
+end)
+
 hooksecurefunc("SellCursorItem", function()
 	if MerchantFrame:IsVisible() and CursorHasItem() then
 		local _, _, itemLink = GetCursorInfo()
@@ -114,8 +126,6 @@ function Logger:OnInitialize()
 	self:RegisterEvent("BLACK_MARKET_BID_RESULT")
 	self:RegisterEvent("AUCTION_HOUSE_AUCTION_CREATED")
 	self:RegisterEvent("LOOT_SLOT_CLEARED")
-	self:RegisterEvent("LOOT_CLOSED")
-	self:RegisterEvent("GUILDBANK_UPDATE_WITHDRAWMONEY")
 	self:RegisterEvent("QUEST_TURNED_IN")
 
 	self:RegisterEvent("PLAYER_MONEY")
@@ -148,18 +158,6 @@ end
 function Logger:LOOT_SLOT_CLEARED()
 	self:SetEvent({
 		type = "LOOT",
-	})
-end
-
-function Logger:LOOT_CLOSED()
-	C_Timer.After(0.1, function()
-		self:SetEvent(nil)
-	end)
-end
-
-function Logger:GUILDBANK_UPDATE_WITHDRAWMONEY()
-	self:SetEvent({
-		type = "GUILD_BANK"
 	})
 end
 
