@@ -41,13 +41,13 @@ end)
 
 hooksecurefunc("WithdrawGuildBankMoney", function()
 	Logger:SetEvent({
-		type = "GUILD_BANK"
+		type = "GUILD_BANK_WITHDRAW"
 	})
 end)
 
 hooksecurefunc("DepositGuildBankMoney", function()
 	Logger:SetEvent({
-		type = "GUILD_BANK"
+		type = "GUILD_BANK_DEPOSIT"
 	})
 end)
 
@@ -108,9 +108,10 @@ do
 	hooksecurefunc("TakeInboxMoney", onLoot)
 end
 
-hooksecurefunc("SendMail", function()
+hooksecurefunc("SendMail", function(recipient)
 	Logger:SetEvent({
 		type = "MAIL_OUT",
+		recipient = recipient,
 	})
 end)
 
