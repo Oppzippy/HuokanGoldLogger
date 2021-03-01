@@ -98,8 +98,10 @@ do
 				buyerName = buyerName
 			})
 		else
+			local _, _, sender = GetInboxHeaderInfo(index)
 			Logger:SetEvent({
 				type = "MAIL_IN",
+				sender = sender,
 			})
 		end
 	end
