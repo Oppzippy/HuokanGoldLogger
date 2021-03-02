@@ -95,7 +95,7 @@ do
 			Logger:SetEvent({
 				type = "AUCTION_HOUSE_SELL",
 				itemName = itemName,
-				buyerName = buyerName
+				buyerName = buyerName ~= "" and buyerName
 			})
 		else
 			local _, _, sender = GetInboxHeaderInfo(index)
