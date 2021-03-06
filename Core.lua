@@ -9,6 +9,11 @@ function Core:OnInitialize()
 	self:RegisterChatCommand("huokangoldlogger", "SlashCmd")
 	self:RegisterChatCommand("huokangoldlog", "SlashCmd")
 	self:RegisterChatCommand("hgl", "SlashCmd")
+	if #HuokanGoldLog > 10000 then
+		local Storage = self:GetModule("Storage")
+		local startIndex = Storage:GetFirstUncompressedIndex()
+		Storage:CompressAfter(startIndex)
+	end
 end
 
 function Core:SlashCmd(args)
@@ -22,10 +27,6 @@ function Core:SlashCmd(args)
 		else
 			self:Print("Already compressed!")
 		end
-		local logSize = #HuokanGoldLog
-		if logSize >= 20 then
-			self:Printf("Your log file is still %d lines long after compressing. Consider running a full compress. Type \"/huokangoldlogger help\" for more info.", logSize)
-		end
 	elseif args == "fullcompress" then
 		local Storage = self:GetModule("Storage")
 		self:Print("Fully compressing gold log. This may take some time.")
@@ -33,8 +34,9 @@ function Core:SlashCmd(args)
 		self:Print("Done compressing!")
 	elseif args == "help" or args == "?" or args == "" then
 		self:Print([[\n
-/huokangoldlogger compress - Compresses all log data since the last compress
-/huokangoldlogger fullcompress - Decompresses all data from previous compressions, merges it all together, and compresses again. This will result in a significantly smaller file after many compressons have ben run but may take a long time with large log files.
+Don't use any of these commands unless you know what you're doing and have a good reason.
+/huokangoldlogger compress - Compresses all log data since the last compress.
+/huokangoldlogger fullcompress - Decompresses all data from previous compressions, merges it all together, and compresses again. This will result in a significantly smaller file after many compressons have ben run but may take a long time with large log files. Make a backup of your log first before using this.
 ]])
 	end
 end
