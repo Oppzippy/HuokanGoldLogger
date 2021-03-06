@@ -5,6 +5,8 @@ local AceAddon = LibStub("AceAddon-3.0")
 local Core = AceAddon:NewAddon("HuokanGoldLogger", "AceConsole-3.0")
 addon.Core = Core
 
+if not HuokanGoldLog then HuokanGoldLog = {} end
+
 function Core:OnInitialize()
 	self:RegisterChatCommand("huokangoldlogger", "SlashCmd")
 	self:RegisterChatCommand("huokangoldlog", "SlashCmd")
@@ -33,7 +35,7 @@ function Core:SlashCmd(args)
 		Storage:CompressAfter(1)
 		self:Print("Done compressing!")
 	elseif args == "help" or args == "?" or args == "" then
-		self:Print([[\n
+		self:Print([[
 Don't use any of these commands unless you know what you're doing and have a good reason.
 /huokangoldlogger compress - Compresses all log data since the last compress.
 /huokangoldlogger fullcompress - Decompresses all data from previous compressions, merges it all together, and compresses again. This will result in a significantly smaller file after many compressons have ben run but may take a long time with large log files. Make a backup of your log first before using this.
