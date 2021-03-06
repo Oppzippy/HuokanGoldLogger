@@ -125,6 +125,7 @@ function Logger:OnInitialize()
 
 	self:RegisterEvent("PLAYER_ENTERING_WORLD")
 
+	self:RegisterEvent("TRADE_SHOW")
 	self:RegisterEvent("PLAYER_TRADE_MONEY")
 	self:RegisterEvent("BLACK_MARKET_BID_RESULT")
 	self:RegisterEvent("AUCTION_HOUSE_AUCTION_CREATED")
@@ -139,11 +140,20 @@ function Logger:PLAYER_ENTERING_WORLD()
 	self.prevMoney = GetMoney()
 end
 
+function Logger:TRADE_SHOW()
+	local name, realm = UnitName("npc")
+	self.tradeTarget = {
+		name = name,
+		realm = realm or GetRealmName(),
+	}
+end
+
 function Logger:PLAYER_TRADE_MONEY()
-	-- XXX sometimes this event fires after PLAYER_MONEY
 	self:SetEvent({
 		type = "TRADE",
+		tradeTarget = self.tradeTarget,
 	})
+	self.tradeTarget = nil
 end
 
 function Logger:BLACK_MARKET_BID_RESULT()
@@ -175,9 +185,11 @@ end
 
 function Logger:PLAYER_MONEY()
 	local money, prevMoney = GetMoney(), self.prevMoney
-	self.prevMoney = money
-	self:Log(prevMoney, money, self.event)
-	self:SetEvent(nil)
+	if money ~= prevMoney then
+		self.prevMoney = money
+		self:Log(prevMoney, money, self.event)
+		self:SetEvent(nil)
+	end
 end
 
 function Logger:SetEvent(event)
@@ -191,6 +203,7 @@ function Logger:Log(prevMoney, newMoney, event)
 		self:SetEvent(nil)
 	end
 	if not event then
+		print("Unknown gold change!")
 		event = {
 			type = "UNKNOWN",
 		}
