@@ -203,7 +203,9 @@ function Logger:Log(prevMoney, newMoney, event)
 		self:SetEvent(nil)
 	end
 	if not event then
-		print("Unknown gold change!")
+		if HuokanGoldLogger_DebugMode then
+			Core:Print("Unknown gold change!")
+		end
 		event = {
 			type = "UNKNOWN",
 		}
