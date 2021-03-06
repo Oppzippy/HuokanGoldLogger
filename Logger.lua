@@ -91,18 +91,26 @@ do
 	local function onLoot(index)
 		local _, _, _, _, isInvoice = GetInboxText(index)
 		local invoiceType, itemName, buyerName = GetInboxInvoiceInfo(index)
-		if isInvoice and invoiceType == "seller" then
-			Logger:SetEvent({
-				type = "AUCTION_HOUSE_SELL",
-				itemName = itemName,
-				buyerName = buyerName ~= "" and buyerName
-			})
-		else
-			local _, _, sender = GetInboxHeaderInfo(index)
-			Logger:SetEvent({
-				type = "MAIL_IN",
-				sender = sender,
-			})
+		local _, _, sender, _, money = GetInboxHeaderInfo(index)
+		if money > 0 then
+			-- There's no good way of matching mails to the loot received from them,
+			-- so we just go by amount of gold and hope that's unique enough for the most part
+			-- Worst case, we have a mail show up as UNKNOWN.
+			local event
+			if isInvoice and invoiceType == "seller" then
+				event = {
+					type = "AUCTION_HOUSE_SELL",
+					sender = sender,
+					itemName = itemName,
+					buyerName = buyerName ~= "" and buyerName
+				}
+			else
+				event = {
+					type = "MAIL_IN",
+					sender = sender,
+				}
+			end
+			Logger.mailEvents[money] = event
 		end
 	end
 
@@ -122,9 +130,11 @@ function Logger:OnInitialize()
 		name = UnitName("player"),
 		realm = GetRealmName(),
 	}
+	self.mailEvents = {}
 
 	self:RegisterEvent("PLAYER_ENTERING_WORLD")
 
+	self:RegisterEvent("MAIL_CLOSED")
 	self:RegisterEvent("TRADE_SHOW")
 	self:RegisterEvent("PLAYER_TRADE_MONEY")
 	self:RegisterEvent("BLACK_MARKET_BID_RESULT")
@@ -138,6 +148,10 @@ end
 function Logger:PLAYER_ENTERING_WORLD()
 	self:UnregisterEvent("PLAYER_ENTERING_WORLD")
 	self.prevMoney = GetMoney()
+end
+
+function Logger:MAIL_CLOSED()
+	self.mailEvents = {}
 end
 
 function Logger:TRADE_SHOW()
@@ -187,6 +201,9 @@ function Logger:PLAYER_MONEY()
 	local money, prevMoney = GetMoney(), self.prevMoney
 	if money ~= prevMoney then
 		self.prevMoney = money
+		if MailFrame:IsVisible() then
+			self:SetEvent(self.mailEvents[money - prevMoney])
+		end
 		self:Log(prevMoney, money, self.event)
 		self:SetEvent(nil)
 	end
