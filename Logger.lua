@@ -137,6 +137,7 @@ function Logger:OnInitialize()
 
 	self:RegisterEvent("PLAYER_ENTERING_WORLD")
 
+	self:RegisterEvent("MAIL_SHOW")
 	self:RegisterEvent("MAIL_CLOSED")
 	self:RegisterEvent("TRADE_SHOW")
 	self:RegisterEvent("PLAYER_TRADE_MONEY")
@@ -153,8 +154,21 @@ function Logger:PLAYER_ENTERING_WORLD()
 	self.prevMoney = GetMoney()
 end
 
+function Logger:MAIL_SHOW()
+	if self.clearMailEventsTimer then
+		self.clearMailEventsTimer:Cancel()
+		self.clearMailEventsTimer = nil
+	end
+end
+
 function Logger:MAIL_CLOSED()
-	self.mailEvents = {}
+	if self.clearMailEventsTimer then
+		self.clearMailEventsTimer:Cancel()
+	end
+	self.clearMailEventsTimer = C_Timer.NewTimer(5, function()
+		self.mailEvents = {}
+		self.clearMailEventsTimer = nil
+	end)
 end
 
 function Logger:TRADE_SHOW()
