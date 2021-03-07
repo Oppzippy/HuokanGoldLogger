@@ -146,6 +146,7 @@ function Logger:OnInitialize()
 	self:RegisterEvent("LOOT_SLOT_CLEARED")
 	self:RegisterEvent("QUEST_TURNED_IN")
 	self:RegisterEvent("TAXIMAP_CLOSED")
+	self:RegisterEvent("LFG_COMPLETION_REWARD")
 
 	self:RegisterEvent("PLAYER_MONEY")
 end
@@ -218,6 +219,12 @@ end
 function Logger:TAXIMAP_CLOSED()
 	self:SetEvent({
 		type = "FLIGHT_PATH",
+	})
+end
+
+function Logger:LFG_COMPLETION_REWARD()
+	self:SetEvent({
+		type = "LFG_COMPLETION_REWARD",
 	})
 end
 
