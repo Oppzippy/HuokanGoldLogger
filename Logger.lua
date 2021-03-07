@@ -218,8 +218,9 @@ function Logger:PLAYER_MONEY()
 	local money, prevMoney = GetMoney(), self.prevMoney
 	if money ~= prevMoney then
 		self.prevMoney = money
-		if MailFrame:IsVisible() then
-			self:SetEvent(self.mailEvents[money - prevMoney])
+		local diff = money - prevMoney
+		if (MailFrame:IsVisible() or self.clearMailEventsTimer) and self.mailEvents[diff] then
+			self:SetEvent(self.mailEvents[diff])
 		end
 		self:Log(prevMoney, money, self.event)
 		self:SetEvent(nil)
