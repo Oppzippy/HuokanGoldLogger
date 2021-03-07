@@ -145,6 +145,7 @@ function Logger:OnInitialize()
 	self:RegisterEvent("AUCTION_HOUSE_AUCTION_CREATED")
 	self:RegisterEvent("LOOT_SLOT_CLEARED")
 	self:RegisterEvent("QUEST_TURNED_IN")
+	self:RegisterEvent("TAXIMAP_CLOSED")
 
 	self:RegisterEvent("PLAYER_MONEY")
 end
@@ -212,6 +213,12 @@ function Logger:QUEST_TURNED_IN(_, questId, _, copperReward)
 			questId = questId,
 		})
 	end
+end
+
+function Logger:TAXIMAP_CLOSED()
+	self:SetEvent({
+		type = "FLIGHT_PATH",
+	})
 end
 
 function Logger:PLAYER_MONEY()
