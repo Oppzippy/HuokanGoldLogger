@@ -91,6 +91,9 @@ do
 	local function onLoot(index)
 		local _, _, _, _, isInvoice = GetInboxText(index)
 		local invoiceType, itemName, buyerName = GetInboxInvoiceInfo(index)
+		if buyerName == "" then
+			buyerName = nil
+		end
 		local _, _, sender, _, money = GetInboxHeaderInfo(index)
 		if money > 0 then
 			-- There's no good way of matching mails to the loot received from them,
@@ -102,7 +105,7 @@ do
 					type = "AUCTION_HOUSE_SELL",
 					sender = sender,
 					itemName = itemName,
-					buyerName = buyerName ~= "" and buyerName
+					buyerName = buyerName
 				}
 			else
 				event = {
