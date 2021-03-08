@@ -157,6 +157,7 @@ function Logger:OnInitialize()
 	self:RegisterEvent("QUEST_TURNED_IN")
 	self:RegisterEvent("TAXIMAP_CLOSED")
 	self:RegisterEvent("LFG_COMPLETION_REWARD")
+	self:RegisterEvent("GARRISON_MISSION_BONUS_ROLL_LOOT")
 
 	self:RegisterEvent("PLAYER_MONEY")
 end
@@ -235,6 +236,12 @@ end
 function Logger:LFG_COMPLETION_REWARD()
 	self:SetEvent({
 		type = "LFG_COMPLETION_REWARD",
+	})
+end
+
+function Logger:GARRISON_MISSION_BONUS_ROLL_LOOT()
+	self:SetEvent({
+		type = "MISSION_TABLE",
 	})
 end
 
