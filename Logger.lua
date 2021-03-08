@@ -115,7 +115,7 @@ do
 					type = "AUCTION_HOUSE_SELL",
 					sender = sender,
 					itemName = itemName,
-					buyerName = buyerName
+					buyerName = buyerName,
 				}
 			else
 				event = {
