@@ -40,14 +40,24 @@ hooksecurefunc("RepairAllItems", function(isGuildBankRepair)
 end)
 
 hooksecurefunc("WithdrawGuildBankMoney", function()
+	local guildName, _, _, guildRealm = GetGuildInfo("player")
 	Logger:SetEvent({
-		type = "GUILD_BANK_WITHDRAW"
+		type = "GUILD_BANK_WITHDRAW",
+		guild = {
+			name = guildName,
+			realm = guildRealm or GetRealmName(),
+		},
 	})
 end)
 
 hooksecurefunc("DepositGuildBankMoney", function()
+	local guildName, _, _, guildRealm = GetGuildInfo("player")
 	Logger:SetEvent({
-		type = "GUILD_BANK_DEPOSIT"
+		type = "GUILD_BANK_DEPOSIT",
+		guild = {
+			name = guildName,
+			realm = guildRealm or GetRealmName(),
+		},
 	})
 end)
 
